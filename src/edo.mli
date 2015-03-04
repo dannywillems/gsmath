@@ -9,5 +9,8 @@
  * n : number of points
 *)
 
-val euler : ((float -> float) -> float) -> float -> float -> float -> int
+val euler : (float -> float -> float) -> float -> float -> float -> int
+            -> float array
+
+val rk4 :   (float -> float -> float) -> float -> float -> float -> int
             -> float array
