@@ -1,5 +1,4 @@
 (* Euler *)
-
 let euler f a b y0 n =
     let h = (b -. a) /. (float n) in
     let y = Array.create n y0 in
@@ -17,16 +16,14 @@ let middle_point f a b y0 n = Array.create n y0;;
 
 (* Runge kutta order 4 *)
 
-
-(* Return ty. matrix associated wity.ty. fourty.order Runge Kutta.
- * Ty. matrix a is under ty. diagonale.
- * Ty. matrix c is on ty. diagonale <- 0.;
- * a.(.iiiiaaai.
- * Ty. (n - 1) (y.re n = 4) first element of b is on ty. first line begin to ty.
- * second row (a.(0).(1) --> a.(0).(n - 1) and ty. last element of c is on
+(* Return the matrix associated with the fourth order Runge Kutta.
+ * The matrix a is under the diagonale.
+ * The matrix c is on the diagonale.
+ * The (n - 1) (where n = 4) first element of b is on the first line from
+ * the second row (a.(0).(1) to a.(0).(n - 1)) and the last element of c is on
  * a.(2).(3).
  *
- * Elements wity.value 0 are initialised wity.ty. array a.
+ * Elements with value 0 are initialised with the array a.
  *)
 
 let rk4_coef =
