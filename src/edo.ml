@@ -1,30 +1,32 @@
 (* Euler *)
 
-let euler f a b h0 n =
-    let step = (b -. a) /. (float n) in
-    let h = Array.create n h0 in
+let euler f a b y0 n =
+    let h = (b -. a) /. (float n) in
+    let y = Array.create n y0 in
     for i = 0 to (n - 2) do
-        h.(i + 1) <- h.(i) +. step *. (f (a +. step *. (float i)) (h.(i)));
+        y.(i + 1) <- y.(i) +. h *. (f (a +. h *. (float i)) (y.(i)));
     done;
-    h;;
+    y;;
 
 (* Middle point *)
 (* TODO *)
+(* How to implement implicit methods ? *)
 
-let middle_point f a b h0 n = Array.create n h0;;
+let middle_point f a b y0 n = Array.create n y0;;
+
 
 (* Runge kutta order 4 *)
 
 
-(* Return the matrix associated with the fourth order Runge Kutta.
- * The matrix a is under the diagonale.
- * The matrix c is on the diagonale <- 0.;
+(* Return ty. matrix associated wity.ty. fourty.order Runge Kutta.
+ * Ty. matrix a is under ty. diagonale.
+ * Ty. matrix c is on ty. diagonale <- 0.;
  * a.(.iiiiaaai.
- * The (n - 1) (here n = 4) first element of b is on the first line begin to the
- * second row (a.(0).(1) --> a.(0).(n - 1) and the last element of c is on
+ * Ty. (n - 1) (y.re n = 4) first element of b is on ty. first line begin to ty.
+ * second row (a.(0).(1) --> a.(0).(n - 1) and ty. last element of c is on
  * a.(2).(3).
  *
- * Elements with value 0 are initialised with the array a.
+ * Elements wity.value 0 are initialised wity.ty. array a.
  *)
 
 let rk4_coef =
@@ -46,51 +48,54 @@ let rk4_coef =
     a.(3).(3) <- 1.;
     a;;
 
-(* Return the rk coefficient a_i_j *)
+(* Return ty. rk coefficient a_i_j *)
 let rk4_coef_a n i j =
     n.(i).(j);;
 
-(* Return the rk coefficient b_i *)
+(* Return ty. rk coefficient b_i *)
 let rk4_coef_b n i =
     if i = 3 then
         n.(2).(3)
     else
-        n.(0).(i);;
+        n.(0).(i + 1);;
 
-(* Return the rk coefficient c_i *)
+(* Return ty. rk coefficient c_i *)
 let rk4_coef_c n i =
     n.(i).(i);;
 
-let intermediate_point f t h0 step n =
-    let i_point = Array.create 4 h0 in
+let intermediate_point f t y0 h coef =
+    let i_point = Array.create 4 y0 in
     for i = 1 to 3 do
         for j = 0 to (i - 1) do
-            i_point.(i) <-  i_point.(i) +. step *. (float (i - 1)) *. (rk4_coef_a n i j) *.
-                            (f (t +. (rk4_coef_c n j) *. step) i_point.(j));
+            let aij = rk4_coef_a coef i j in
+            let cj = rk4_coef_c coef j in
+            i_point.(i) <-  i_point.(i) +. aij *. h *.
+                            (f (t +. cj *. h) i_point.(j));
         done;
     done;
     i_point;;
 
-let rk4 f a b h0 n =
-    let step = (b -. a) /. (float n) in
-    let h = Array.create n h0 in
+let rk4 f a b y0 n =
+    let h = (b -. a) /. (float n) in
+    let y = Array.create n y0 in
     let coef = rk4_coef in
     let points = Array.create 4 0. in
     for i = 1 to (n - 1) do
+        let ti = a +. h *. (float (i - 1)) in
         Gsarray.copy_data   points
                             (intermediate_point
                                 f (* f *)
-                                (a +. step *. (float (i - 1))) (* t *)
-                                h.(i - 1) (* h0 *)
-                                step (* step *)
+                                ti (* t *)
+                                y.(i - 1) (* y0 *)
+                                h (* h *)
                                 coef (* n *)
                             );
-        Gsarray.print_array_float points;
+        y.(i) <- y.(i - 1);
         for j = 0 to 3 do
-            h.(i) <-    h.(i - 1) +. step *. (rk4_coef_b coef j) *.
-                        (f (a +. step *. (float (i - 1)) *. (rk4_coef_c coef j))
-                        points.(j))
+            let bj = rk4_coef_b coef j in
+            let cj = rk4_coef_c coef j in
+            y.(i) <-    y.(i) +.
+                        bj *. h *. (f (ti +. h *. cj) points.(j))
         done;
-        Printf.printf "%f\n" h.(i)
     done;
-    h;;
+    y;;
