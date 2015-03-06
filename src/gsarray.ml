@@ -8,7 +8,7 @@ let copy_data a b =
     let n = Array.length a in
     if n = Array.length b then
         for i = 0 to (n - 1) do
-            b.(i) <- a.(i)
+            a.(i) <- b.(i)
         done;;
 
 let print_array_float a =
