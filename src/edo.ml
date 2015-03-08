@@ -1,11 +1,16 @@
+(** For add two float array and multiply by a scalar *)
+open Gsarray.Operation;;
+
 (* Euler *)
 let euler f a b y0 n =
     let h = (b -. a) /. (float n) in
     let y = Array.create n y0 in
     for i = 0 to (n - 2) do
-        y.(i + 1) <- y.(i) +. h *. (f (a +. h *. (float i)) (y.(i)));
+        y.(i + 1) <- y.(i) ++. h **. (f (a +. h *. (float i)) (y.(i)));
     done;
     y;;
+
+(******************************************************************************)
 
 (* Middle point *)
 (* TODO *)
@@ -13,7 +18,7 @@ let euler f a b y0 n =
 
 let middle_point f a b y0 n = Array.create n y0;;
 
-
+(******************************************************************************)
 (* Runge kutta order 4 *)
 
 (* Return the matrix associated with the fourth order Runge Kutta.
@@ -26,39 +31,42 @@ let middle_point f a b y0 n = Array.create n y0;;
  * Elements with value 0 are initialised with the array a.
  *)
 
+(* ------------------- *)
 let rk4_coef =
     let a = Array.make_matrix 4 4 0. in
-    (* a cofficients *)
+    (* a coefficients *)
     a.(1).(0) <- 1. /. 2.;
     a.(2).(1) <- 1. /. 2.;
     a.(3).(2) <- 1.;
 
-    (* b cofficients *)
+    (* b coefficients *)
     a.(0).(1) <- 1. /. 6.;
     a.(0).(2) <- 1. /. 3.;
     a.(0).(3) <- 1. /. 3.;
     a.(2).(3) <- 1. /. 6.;
 
-    (* c cofficients *)
+    (* c coefficients *)
     a.(1).(1) <- 1. /. 2.;
     a.(2).(2) <- 1. /. 2.;
     a.(3).(3) <- 1.;
     a;;
 
-(* Return ty. rk coefficient a_i_j *)
+(* Return the rk coefficient a_i_j *)
 let rk4_coef_a n i j =
     n.(i).(j);;
 
-(* Return ty. rk coefficient b_i *)
+(* Return the rk coefficient b_i *)
 let rk4_coef_b n i =
     if i = 3 then
         n.(2).(3)
     else
         n.(0).(i + 1);;
 
-(* Return ty. rk coefficient c_i *)
+(* Return the rk coefficient c_i *)
 let rk4_coef_c n i =
     n.(i).(i);;
+
+(* ------------------- *)
 
 let intermediate_point f t y0 h coef =
     let i_point = Array.create 4 y0 in
@@ -66,7 +74,7 @@ let intermediate_point f t y0 h coef =
         for j = 0 to (i - 1) do
             let aij = rk4_coef_a coef i j in
             let cj = rk4_coef_c coef j in
-            i_point.(i) <-  i_point.(i) +. aij *. h *.
+            i_point.(i) <-  i_point.(i) ++. (aij *. h) **.
                             (f (t +. cj *. h) i_point.(j));
         done;
     done;
@@ -91,8 +99,10 @@ let rk4 f a b y0 n =
         for j = 0 to 3 do
             let bj = rk4_coef_b coef j in
             let cj = rk4_coef_c coef j in
-            y.(i) <-    y.(i) +.
-                        bj *. h *. (f (ti +. h *. cj) points.(j))
+            y.(i) <-    y.(i) ++.
+                        (bj *. h) **. (f (ti +. h *. cj) points.(j))
         done;
     done;
     y;;
+
+(******************************************************************************)
