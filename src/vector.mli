@@ -26,6 +26,10 @@ val copy_array : vec array -> vec array -> unit
 (** Vectorial product. Only in 3d ! *)
 val prod_vec : vec3d -> vec3d -> vec3d
 
+val print_array : vec array -> unit
+
+val print : vec -> unit
+
 (** Infix on vecor 
  *  It's in a submodule to be able to use directly the operations by open
  *  Vector.Infix.

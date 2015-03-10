@@ -40,6 +40,12 @@ let copy_array a b =
         Gsarray.copy_data a.(0) b.(0)
     done;;
 
+let print_array a =
+    Gsarray.print_matrix_float a;;
+
+let print v =
+    Gsarray.print_array_float v;;
+
 module Infix =
 struct
     let ( ++. ) a b =
