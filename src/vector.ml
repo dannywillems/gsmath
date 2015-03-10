@@ -11,6 +11,12 @@ let init_3d x y z =
     a.(2) <- z;
     a;;
 
+let create_array n m =
+    Array.make_matrix n m 0.;;
+
+let create_array_3d n =
+    create_array n 3;;
+
 let norm2 v =
     let rec sum_square v i n =
         if i = n - 1 then
@@ -50,9 +56,10 @@ let copy a b =
     Gsarray.copy_data a b;;
 
 let copy_array a b =
-    for i = 0 to Array.length b
+    let n = Array.length b in
+    for i = 0 to (n - 1)
     do
-        Gsarray.copy_data a.(0) b.(0)
+        copy a.(i) b.(i)
     done;;
 
 let set_ith_compo v i a =

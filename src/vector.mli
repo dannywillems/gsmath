@@ -16,6 +16,13 @@ val create : int -> vec
 
 (** Create a new vecor3d initialized with value [x] [y] [z] *)
 val init_3d : float -> float -> float -> vec3d
+
+(** Create an array of vector initialized at 0 *)
+val create_array : int -> int -> vec array
+
+(** Create an array of vector 3d initialized at 0 *)
+val create_array_3d : int -> vec3d array
+
 (* -------------------------------------------------------------------------- *)
 
 (* -------------------------------------------------------------------------- *)
