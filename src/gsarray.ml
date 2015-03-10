@@ -18,11 +18,11 @@ let print_array_float a =
             Printf.printf "%f" a.(i)
         else
             Printf.printf "%f    " a.(i)
-    done;;
+    done;
+    Printf.printf "\n";;
 
 let print_matrix_float a =
     let n = Array.length a in
     for i = 0 to (n - 1) do
         print_array_float a.(i);
-        Printf.printf "\n"
     done;;
