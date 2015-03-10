@@ -71,9 +71,10 @@ let rk4_coef_c n i =
 (* ------------------- *)
 
 let intermediate_point f t y0 h coef =
-    let i_point = Vector.create_array_3d 4 in
+    let i_point = Vector.create_array 4 (Vector.dimension y0) in
     Vector.copy i_point.(0) y0;
     for i = 1 to 3 do
+        Vector.copy i_point.(i) y0;
         for j = 0 to (i - 1) do
             let aij = rk4_coef_a coef i j in
             let cj = rk4_coef_c coef j in
@@ -85,9 +86,9 @@ let intermediate_point f t y0 h coef =
 
 let rk4 f a b y0 n =
     let h = (b -. a) /. (float n) in
-    let y = Vector.create_array_3d n in
+    let y = Vector.create_array n (Vector.dimension y0) in
     let coef = rk4_coef in
-    let points = Vector.create_array_3d 4 in
+    let points = Vector.create_array 4 (Vector.dimension y0) in
 
     Vector.copy y.(0) y0;
     for i = 1 to (n - 1) do
