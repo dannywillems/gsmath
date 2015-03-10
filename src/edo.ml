@@ -4,7 +4,7 @@ open Vector.Infix
 (* Euler *)
 let euler f a b y0 n =
     let h = (b -. a) /. (float n) in
-    let y = Vector.create_array_3d n in
+    let y = Vector.create_array n 1 in
     Vector.copy y.(0) y0;
     for i = 0 to (n - 2) do
         Vector.copy y.(i + 1)   (y.(i) ++. h **.
