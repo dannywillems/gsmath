@@ -26,8 +26,10 @@ val copy_array : vec array -> vec array -> unit
 (** Vectorial product. Only in 3d ! *)
 val prod_vec : vec3d -> vec3d -> vec3d
 
+(** Print array of vector *)
 val print_array : vec array -> unit
 
+(** Print a vector *)
 val print : vec -> unit
 
 (** Infix on vecor 
