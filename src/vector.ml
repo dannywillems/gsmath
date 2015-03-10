@@ -20,6 +20,21 @@ let norm2 v =
     in
     (sqrt (sum_square v 0 (Array.length v)));;
 
+let dimension v =
+    Array.length v;;
+
+let ith_compo v i =
+    v.(i);;
+
+let ith_compo_array a i =
+    let n = Array.length a in
+    let c = Array.create n 0. in
+    for j = 0 to (n - 1)
+    do
+        c.(j) <- a.(j).(i);
+    done;
+    c;;
+
 (** Only in 3D *)
 let prod_vec a b =
     if Array.length a = 3 && Array.length b = 3 then
@@ -29,7 +44,7 @@ let prod_vec a b =
         c.(2) <- a.(0) *. b.(1) -. a.(1) *. b.(0);
         c;
     else
-        raise (Invalid_argument "Must be vec3d");;
+        raise (Invalid_argument "Vector.prod_vec : Must be vec3d");;
 
 let copy a b =
     Gsarray.copy_data a b;;
@@ -40,6 +55,17 @@ let copy_array a b =
         Gsarray.copy_data a.(0) b.(0)
     done;;
 
+let set_ith_compo v i a =
+    let n = Array.length v in
+    let m = Array.length a in
+    if m = n then
+        for j = 0 to (n - 1)
+        do
+            v.(j).(i) <- a.(j);
+        done
+    else
+        raise (Invalid_argument "Vector.copy: [v] and [a] must be the same
+                                length");;
 let print_array a =
     Gsarray.print_matrix_float a;;
 
