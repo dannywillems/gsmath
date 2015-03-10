@@ -1,5 +1,5 @@
-(** For add two float array and multiply by a scalar *)
-open Gsarray.Operation;;
+(** For operations on vectors *)
+open Vector.Infix
 
 (* Euler *)
 let euler f a b y0 n =
@@ -84,10 +84,10 @@ let rk4 f a b y0 n =
     let h = (b -. a) /. (float n) in
     let y = Array.create n y0 in
     let coef = rk4_coef in
-    let points = Array.create 4 0. in
+    let points = Array.create 4 y0 in
     for i = 1 to (n - 1) do
         let ti = a +. h *. (float (i - 1)) in
-        Gsarray.copy_data   points
+        Vector.copy_array   points
                             (intermediate_point
                                 f (* f *)
                                 ti (* t *)

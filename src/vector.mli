@@ -1,46 +1,40 @@
 (**
- * This module provides some routines about vector of R^n.
+ * This module provides some routines about vecor of R^n.
  * Vector are represented by float array of n elements.
  *
  * @author Danny Willems
  *)
 
-module TypeDef :
-sig
-    type vect
-    type vect3d
-end
+type vec = float array
+type vec3d = float array
 
-open TypeDef
+(** Create a new vecor initialized at 0. *)
+val create : int -> vec
 
-(** Create a new vector initialized at 0. *)
-val create : int -> vect
-
-(** Create a new vector3d initialized with value [x] [y] [z] *)
-val init_3d : float -> float -> float -> vect3d
-
-val set : vect -> int -> float -> unit
-
-val get : vect -> int -> float
+(** Create a new vecor3d initialized with value [x] [y] [z] *)
+val init_3d : float -> float -> float -> vec3d
 
 (** Return the euclidian norm *)
-val norm2 : vect -> float
+val norm2 : vec -> float
 
-(** Copy *)
-val copy : vect -> vect -> unit
+(** Copy a vector *)
+val copy : vec -> vec -> unit
+
+(** Copy an array of vector *)
+val copy_array : vec array -> vec array -> unit
 
 (** Vectorial product. Only in 3d ! *)
-val prod_vect : vect3d -> vect3d -> vect3d
+val prod_vec : vec3d -> vec3d -> vec3d
 
-(** Operation on vector 
+(** Infix on vecor 
  *  It's in a submodule to be able to use directly the operations by open
- *  Vector.Operation.
+ *  Vector.Infix.
  *)
-module Operation :
+module Infix :
 sig
     (** Add two float array in a new float array *)
-    val ( ++. ) : vect -> vect -> vect
+    val ( ++. ) : vec -> vec -> vec
 
     (** Scalar multiplication *)
-    val ( **. ) : float -> vect -> vect
+    val ( **. ) : float -> vec -> vec
 end

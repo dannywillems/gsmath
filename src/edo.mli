@@ -1,5 +1,3 @@
-open Vector.TypeDef
-
 (**
  * Routines to resolve first order ordinary differential equation
  * @author Danny Willems
@@ -12,11 +10,11 @@ open Vector.TypeDef
 *)
 
 (** Euler method *)
-val euler : (float -> vect -> vect) -> float -> float
-            -> vect -> int
-            -> vect array
+val euler : (float -> Vector.vec -> Vector.vec) -> float -> float
+            -> Vector.vec -> int
+            -> Vector.vec array
 
 (** Runge Kutta order 4 *)
-val rk4 :   (float -> vect -> vect) -> float -> float
-            -> vect -> int
-            -> vect array
+val rk4 :   (float -> Vector.vec -> Vector.vec) -> float -> float
+            -> Vector.vec -> int
+            -> Vector.vec array
