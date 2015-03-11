@@ -37,6 +37,6 @@ let rec trapeze_point x y ci =
     a.(0) <- ci;
     for i = 0 to n - 1
     do
-        a.(i) <- a.(i) +. (y.(i) -. a.(0)) *. 0.5 *. (x.(i) -. x.(0));
+        a.(i) <- a.(0) +. (y.(i) -. a.(0)) *. 0.5 *. (x.(i) -. x.(0));
     done;
     a;;
