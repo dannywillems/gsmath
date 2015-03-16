@@ -1,5 +1,5 @@
-type vec = float array
-type vec3d = float array
+type vec    = float array
+type vec3d  = float array
 
 let create n =
     Array.create n 0.;;
@@ -71,13 +71,27 @@ let set_ith_compo v i a =
             v.(j).(i) <- a.(j);
         done
     else
-        raise (Invalid_argument "Vector.copy: [v] and [a] must be the same
+        raise (Invalid_argument "Vector.copy: [v] and [a] must have the same
                                 length");;
+
+
 let print_array a =
     Gsarray.print_matrix_float a;;
 
 let print v =
     Gsarray.print_array_float v;;
+
+let sub_array a start len =
+    let n = Array.length a in
+    let b = create_array n len in
+    for i = 0 to (n - 1)
+    do
+        for j = 0 to (len - 1)
+        do
+            b.(i).(j) <- a.(i).(j + start)
+        done;
+    done;
+    b;;
 
 module Infix =
 struct
@@ -86,6 +100,26 @@ struct
         let c = Array.create n 0. in
         for i = 0 to (n - 1) do
             c.(i) <- a.(i) +. b.(i)
+        done;
+        c;;
+
+    let ( +=. ) a b =
+        let n = Array.length a in
+        for i = 0 to (n - 1) do
+            a.(i) <- a.(i) +. b.(i)
+        done;;
+
+    let ( -=. ) a b =
+        let n = Array.length a in
+        for i = 0 to (n - 1) do
+            a.(i) <- a.(i) -. b.(i)
+        done;;
+
+    let ( --. ) a b =
+        let n = Array.length a in
+        let c = Array.create n 0. in
+        for i = 0 to (n - 1) do
+            c.(i) <- a.(i) -. b.(i)
         done;
         c;;
 

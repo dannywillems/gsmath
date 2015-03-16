@@ -4,7 +4,7 @@ open Vector.Infix
 (* Euler *)
 let euler f a b y0 n =
     let h = (b -. a) /. (float n) in
-    let y = Vector.create_array n 1 in
+    let y = Vector.create_array n (Vector.dimension y0) in
     Vector.copy y.(0) y0;
     for i = 0 to (n - 2) do
         Vector.copy y.(i + 1)   (y.(i) ++. h **.
@@ -78,10 +78,10 @@ let intermediate_point f t y0 h coef =
         for j = 0 to (i - 1) do
             let aij = rk4_coef_a coef i j in
             let cj = rk4_coef_c coef j in
-            Vector.copy i_point.(i) (i_point.(i) ++. (aij *. h) **.
-                                    (f (t +. cj *. h) i_point.(j)))
+            i_point.(i) +=. ((aij *. h) **. (f (t +. cj *. h) i_point.(j)))
         done;
     done;
+    (*Vector.print_array i_point;*)
     i_point;;
 
 let rk4 f a b y0 n =
@@ -93,20 +93,12 @@ let rk4 f a b y0 n =
     Vector.copy y.(0) y0;
     for i = 1 to (n - 1) do
         let ti = a +. h *. (float (i - 1)) in
-        Vector.copy_array   points
-                            (intermediate_point
-                                f (* f *)
-                                ti (* t *)
-                                y.(i - 1) (* y0 *)
-                                h (* h *)
-                                coef (* n *)
-                            );
+        Vector.copy_array points (intermediate_point f ti y.(i - 1) h coef);
         Vector.copy y.(i) y.(i - 1);
         for j = 0 to 3 do
             let bj = rk4_coef_b coef j in
             let cj = rk4_coef_c coef j in
-            Vector.copy y.(i)   (y.(i) ++. (bj *. h) **.
-                                (f (ti +. h *. cj) points.(j)))
+            y.(i) +=. ((bj *. h) **. (f (ti +. h *. cj) points.(j)))
         done;
     done;
     y;;

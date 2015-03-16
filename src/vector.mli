@@ -62,6 +62,8 @@ val prod_vec : vec3d -> vec3d -> vec3d
  *  Set a as the ith composant of v
  *)
 val set_ith_compo : vec array -> int -> float array -> unit
+
+val sub_array : vec array -> int -> int -> vec array
 (* -------------------------------------------------------------------------- *)
 
 (* -------------------------------------------------------------------------- *)
@@ -80,8 +82,11 @@ val print : vec -> unit
  *)
 module Infix :
 sig
-    (** Add two float array in a new float array *)
+    (** Add and substract two float array in a new float array *)
     val ( ++. ) : vec -> vec -> vec
+    val ( +=. ) : vec -> vec -> unit
+    val ( -=. ) : vec -> vec -> unit
+    val ( --. ) : vec -> vec -> vec
 
     (** Scalar multiplication *)
     val ( **. ) : float -> vec -> vec
