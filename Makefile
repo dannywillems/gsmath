@@ -44,6 +44,7 @@ tar dist: clean
 	cd .. && tar --dereference --exclude="*~" --exclude="*.tar.gz" \
 	  --exclude="._*" --exclude=".DS_Store" \
 	  --exclude="doc/*.html" --exclude="doc/*.css" \
+	  --exclude=".git" \
 	  -zcvf "$(CURRENT_DIR)/$(TARBALL)" "$(CURRENT_DIR)"
 
 clean::
