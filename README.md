@@ -1,5 +1,4 @@
-GSMath in Ocaml
-===============
+GSMath
+======
 
-- interpolation
-- root finding
+GSMath provides a mathematical library (linear algebra, algebra, analysis, etc)
