@@ -1,8 +1,3 @@
-# Installez findlib http://projects.camlcity.org/projects/findlib.html
-# et ensuite Archimedes https://forge.ocamlcore.org/projects/archimedes/
-# Configuration dans Makefile.conf.  Vous ne devriez pas avoir à
-# modifier ce fichier.
-
 include Makefile.conf
 
 SOURCES = $(addprefix src/, $(PROGRAMS))
