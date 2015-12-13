@@ -1,8 +1,9 @@
 open Matrix;;
 
 (* Used by CGL distribution *)
-let pi = acos(-1.);;
+let pi = acos(-1.)
 
+(* -------------------------------------------------------------------------- *)
 (*
  * Least squares algorithms. Return [a, b] where a and b are coefficient of ax+b
  * if the system is resolvable, else an exception
@@ -22,8 +23,10 @@ let least_squares points w =
         b.(1) <- b.(1) +. y *. w.(i);
     done;
 
-    Matrix.resolve a b;;
+    Matrix.resolve a b
+(* -------------------------------------------------------------------------- *)
 
+(* -------------------------------------------------------------------------- *)
 (*
  * ------------------------
  * Lagrangian interpolation
@@ -39,8 +42,10 @@ let rec cgl_node ?(i = 0) a b n f =
     else
         let x = (a +. b) /. 2. -. (b -. a) /. 2. *. cos(pi /. float(n) *.
         float(i)) in
-        (x, (f x)) :: cgl_node ~i:(i + 1) a b n f;;
+        (x, (f x)) :: cgl_node ~i:(i + 1) a b n f
+(* -------------------------------------------------------------------------- *)
 
+(* -------------------------------------------------------------------------- *)
 (* k-ième composante of Lagrange polynomial basis evaluation *)
 let rec lagrange_evaluation_k ?(i = 0) points x_k a =
     if i = Array.length points then
@@ -51,7 +56,7 @@ let rec lagrange_evaluation_k ?(i = 0) points x_k a =
             (a -. x_i) /. (x_k -. x_i) *. (lagrange_evaluation_k ~i:(i
         + 1) points x_k a)
         else
-            (lagrange_evaluation_k ~i:(i + 1) points x_k a);;
+            (lagrange_evaluation_k ~i:(i + 1) points x_k a)
 
 (* Lagrande polynomial evaluation based on lagrange_evaluation_k *)
 let rec lagrange_evaluation ?(i = 0) points a =
@@ -60,4 +65,5 @@ let rec lagrange_evaluation ?(i = 0) points a =
     else
         let x_i, y_i = points.(i) in
         y_i *. (lagrange_evaluation_k points x_i a) +. (lagrange_evaluation
-        ~i:(i + 1) points a);;
+        ~i:(i + 1) points a)
+(* -------------------------------------------------------------------------- *)

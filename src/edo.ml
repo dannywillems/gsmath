@@ -10,7 +10,7 @@ let euler f a b y0 n =
         Vector.copy y.(i + 1)   (y.(i) ++. h **.
                                 (f (a +. h *. (float i)) (y.(i))))
     done;
-    y;;
+    y
 
 (******************************************************************************)
 
@@ -18,7 +18,7 @@ let euler f a b y0 n =
 (* TODO *)
 (* How to implement implicit methods ? *)
 
-let middle_point f a b y0 n = Vector.create_array_3d n;;
+let middle_point f a b y0 n = Vector.create_array_3d n
 
 (******************************************************************************)
 (* Runge kutta order 4 *)
@@ -51,25 +51,25 @@ let rk4_coef =
     a.(1).(1) <- 1. /. 2.;
     a.(2).(2) <- 1. /. 2.;
     a.(3).(3) <- 1.;
-    a;;
+    a
 
 (* Return the rk coefficient a_i_j *)
 let rk4_coef_a n i j =
-    n.(i).(j);;
+    n.(i).(j)
 
 (* Return the rk coefficient b_i *)
 let rk4_coef_b n i =
     if i = 3 then
         n.(2).(3)
     else
-        n.(0).(i + 1);;
+        n.(0).(i + 1)
 
 (* Return the rk coefficient c_i *)
 let rk4_coef_c n i =
-    n.(i).(i);;
-
+    n.(i).(i)
 (* ------------------- *)
 
+(* ------------------- *)
 let intermediate_point f t y0 h coef =
     let i_point = Vector.create_array 4 (Vector.dimension y0) in
     Vector.copy i_point.(0) y0;
@@ -81,9 +81,10 @@ let intermediate_point f t y0 h coef =
             i_point.(i) +=. ((aij *. h) **. (f (t +. cj *. h) i_point.(j)))
         done;
     done;
-    (*Vector.print_array i_point;*)
-    i_point;;
+    i_point
+(* ------------------- *)
 
+(* ------------------- *)
 let rk4 f a b y0 n =
     let h = (b -. a) /. (float n) in
     let y = Vector.create_array n (Vector.dimension y0) in
@@ -101,6 +102,5 @@ let rk4 f a b y0 n =
             y.(i) +=. ((bj *. h) **. (f (ti +. h *. cj) points.(j)))
         done;
     done;
-    y;;
-
+    y
 (******************************************************************************)

@@ -6,14 +6,14 @@ let print a =
             Printf.printf "%f\t" a.(i).(j);
         done;
         Printf.printf "%f\n" a.(i).(m - 1);
-    done;;
+    done
 
 let print_column a =
     let n = Array.length a in
     for i = 0 to (n - 2) do
         Printf.printf "%f\t" a.(i);
     done;
-    Printf.printf "%f\n" a.(n - 1);;
+    Printf.printf "%f\n" a.(n - 1)
 
 let switch_line a i j =
     let n = Array.length a in
@@ -23,7 +23,7 @@ let switch_line a i j =
             let tmp = a.(i).(k) in
             a.(i).(k) <- a.(j).(k);
             a.(j).(k) <- tmp
-        done;;
+        done
 
 let weak_pivot a b i n =
     let rec max_line a i n current_line current_max =
@@ -38,7 +38,7 @@ let weak_pivot a b i n =
         switch_line a i l_max;
         let tmp = b.(i) in
         b.(i) <- b.(l_max);
-        b.(l_max) <- tmp;;
+        b.(l_max) <- tmp
 
 let echelon a b =
     let n = Array.length a in
@@ -54,7 +54,7 @@ let echelon a b =
                 done;
             done;
         )
-    done;;
+    done
 
 let rec is_inversible a n ?(i = 0) () =
     if i = n then
@@ -62,7 +62,7 @@ let rec is_inversible a n ?(i = 0) () =
     else if a.(i).(i) = 0. then
         false
     else
-        is_inversible a n ~i:(i + 1) ();;
+        is_inversible a n ~i:(i + 1) ()
 
 let resolve a b =
     let n = Array.length a in
@@ -87,6 +87,4 @@ let resolve a b =
         done;
         sol
     else
-        failwith "There isn't exactly one solution.";;
-
-
+        failwith "There isn't exactly one solution."

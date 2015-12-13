@@ -1,4 +1,4 @@
-let pi = acos(-1.);;
+let pi = acos(-1.)
 
 let deg_to_rad alpha =
-    alpha *. pi /. 180.;;
+    alpha *. pi /. 180.
