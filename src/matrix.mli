@@ -16,4 +16,6 @@ val echelon : float array array -> float array -> unit
 (* Check if a triangle matrix is inversible *)
 val is_inversible : float array array -> int -> ?i:int -> unit -> bool
 
+val copy_matrix : float array array -> float array array
+
 val resolve : float array array -> float array -> float array
