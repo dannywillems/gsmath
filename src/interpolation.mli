@@ -16,8 +16,8 @@ val product : (int -> float) -> int -> int -> float
 
 val lagrange : float array -> int -> float -> float
 
-val lagrange' : float array -> int -> float -> float
+val derivative_lagrange : float array -> int -> float -> float
 
 val lagrange_evaluation : float array -> float array -> float -> float
 
-val lagrange'_evaluation : float array -> float array -> float -> float
+val derivative_lagrange_evaluation : float array -> float array -> float -> float

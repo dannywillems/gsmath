@@ -46,7 +46,6 @@ let rec cgl_node ?(i = 0) a b n f =
 (* -------------------------------------------------------------------------- *)
 
 (* -------------------------------------------------------------------------- *)
-(* k-ième composante of Lagrange polynomial basis evaluation *)
 
 (* Tail call version of the sum
  * Σ[i -> n] f(i) *)
@@ -79,9 +78,9 @@ let lagrange v i x =
   in
   product lagrange_quotient 0 ((Array.length v) - 1)
 
-(* Computes the derivate of the Lagrange polynomial Li'(x)
+(* Computes the derivative of the Lagrange polynomial Li'(x)
  * such that p(vi) = yi *)
-let lagrange' v i x =
+let derivative_lagrange v i x =
   let f j =
     if j = i then 0.
     else 1. /. (v.(i) -. v.(j))
@@ -96,9 +95,9 @@ let lagrange_evaluation v y x =
   sum lagrange_sum 0 ((Array.length y) - 1)
 
 (* Lagrange derivative evaluation *)
-let lagrange'_evaluation v y x =
+let derivative_lagrange_evaluation v y x =
   let f i =
-    y.(i) *. (lagrange' v i x)
+    y.(i) *. (derivative_lagrange v i x)
   in
   sum f 0 ((Array.length y) - 1)
 
