@@ -1,48 +1,45 @@
 include Makefile.conf
 
-SOURCES = $(addprefix src/, $(PROGRAMS))
+CAMLC=ocamlc
+################################################################################
+################################## Rules #######################################
+.PHONY: all $(NAME) check_dir test run_test clean fclean re
 
-COMMA=,
-NULLSTRING=
-SPACE=$(NULLSTRING) #
-ifneq ($(strip $(AUTHORS)),)
-  PROCESSED_AUTHORS=$(subst $(SPACE),_,$(subst $(COMMA),,$(AUTHORS)))
-else
-  $(error Please fill the AUTHORS in Makefile.conf)
-endif
+all: $(NAME)
 
-CURRENT_DIR = $(notdir $(shell pwd))
-TARBALL	    = $(TP)-$(PROCESSED_AUTHORS).tar.gz
-OCAMLBUILD  = ocamlbuild -use-ocamlfind $(OCAMLFLAGS)
+$(NAME): build
+	ocamlc -a -o $(NAME).cma $(CMO_FILES)
 
-default: all
+build: $(CMI_FILES) $(CMO_FILES)
 
-.PHONY: all byte native
-all: $(BEST)
+##### Rules for compilation
+$(CMO_DIRECTORY)/%.cmo: $(ML_DIRECTORY)/%.ml
+	$(CAMLC) -c -o $@ -I $(MLI_DIRECTORY) -I $(CMI_DIRECTORY) -I $(CMO_DIRECTORY) $<
+$(CMI_DIRECTORY)/%.cmi: $(MLI_DIRECTORY)/%.mli
+	$(CAMLC) -c -o $@ -I $(MLI_DIRECTORY) -I $(CMI_DIRECTORY) -I $(CMO_DIRECTORY) $<
 
-byte: $(SOURCES)
-# 	Compile all sources at once (faster & correct symlinks)
-	$(OCAMLBUILD) -pkg "$(OCAMLPACKS)" $(SOURCES:.ml=.byte)
-$(SOURCES:.ml=.byte): %.byte: %.ml
-	$(OCAMLBUILD) -pkg "$(OCAMLPACKS)" $@
+test: build $(TEST_FILES)
 
-native: $(SOURCES)
-	$(OCAMLBUILD) -pkg "$(OCAMLPACKS)" $(SOURCES:.ml=.native)
-$(SOURCES:.ml=.native): %.native: %.ml
-	$(OCAMLBUILD) -pkg "$(OCAMLPACKS)" $@
+run_test: fclean $(TEST_NATIVE)
 
+$(TEST_DIRECTORY)/%_test.ml: $(ML_DIRECTORY)/%.ml
+	qtest -o $@ extract $<
 
-.PHONY: tar dist clean
-# Make a tarball
-tar dist: clean
-	touch "$(TARBALL)"
-	cd .. && tar --dereference --exclude="*~" --exclude="*.tar.gz" \
-	  --exclude="._*" --exclude=".DS_Store" \
-	  --exclude="doc/*.html" --exclude="doc/*.css" \
-	  --exclude=".git" \
-	  -zcvf "$(CURRENT_DIR)/$(TARBALL)" "$(CURRENT_DIR)"
+$(TEST_BUILD_DIRECTORY)/%.native: $(TEST_DIRECTORY)/%.ml
+	@ocamlbuild -cflags -warn-error,+26 -use-ocamlfind -package oUnit -package qcheck $@
+	@./$(shell basename $@)
 
-clean::
+##### Rules for clean
+clean:
+	$(RM) $(CMO_FILES) $(CMI_FILES)
+
+clean_test:
+	$(RM) $(TEST_FILES) $(TEST_NATIVE)
+	$(RM) qtest.targets.log
 	ocamlbuild -clean
-	-$(RM) -r $(wildcard *~ *.tar.gz) *.docdir
-	$(RM) $(wildcard $(addprefix doc/, *.html *.css *.aux *.log))
+
+fclean: clean_test clean
+	$(RM) $(NAME).cma
+
+re: fclean all
+################################################################################
