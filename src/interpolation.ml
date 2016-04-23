@@ -67,3 +67,30 @@ let rec lagrange_evaluation ?(i = 0) points a =
         y_i *. (lagrange_evaluation_k points x_i a) +. (lagrange_evaluation
         ~i:(i + 1) points a)
 (* -------------------------------------------------------------------------- *)
+
+(* Tail call version of the sum
+ * Σ[i -> n] f(i) *)
+let sum f i n =
+  let rec it f i n sum =
+    if i = n then
+      (f i) +. sum
+    else
+      it f (i+1) n (sum +. (f i))
+  in
+  it f i n 0.
+
+
+(* Computes the derivate of the Lagrange polynomial Li'(x_i)
+ * such that it exists an index i, x.(i) = x_i and p(x_i) = y_i *)
+let lagrange' x i =
+  let f j =
+    if j = i then 0.
+    else 1. /. (x.(i) -. x.(j))
+  in
+  sum f 0 ((Array.length x) - 1)
+
+let lagrange'_evaluation x y =
+  let f i =
+    y.(i) *. (lagrange' x i)
+  in
+  sum f 0 ((Array.length y) - 1)
