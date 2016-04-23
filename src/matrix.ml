@@ -64,9 +64,19 @@ let rec is_inversible a n ?(i = 0) () =
     else
         is_inversible a n ~i:(i + 1) ()
 
+let copy_matrix m =
+  let l = Array.length m in
+  if l = 0 then m
+  else
+    let result = Array.make l m.(0) in
+    for i = 0 to l - 1 do
+      result.(i) <- Array.copy m.(i)
+    done;
+    result
+
 let resolve a b =
     let n = Array.length a in
-    let n_a = Array.copy a in
+    let n_a = copy_matrix a in
     let n_b = Array.copy b in
     let rec sum_coef a line row sol =
         if row = line then
