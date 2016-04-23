@@ -46,24 +46,59 @@ let rec cgl_node ?(i = 0) a b n f =
 (* -------------------------------------------------------------------------- *)
 
 (* -------------------------------------------------------------------------- *)
-(* k-ième composante of Lagrange polynomial basis evaluation *)
-let rec lagrange_evaluation_k ?(i = 0) points x_k a =
-    if i = Array.length points then
-        1.
-    else
-        let (x_i, y_i) = points.(i) in
-        if x_i <> x_k then
-            (a -. x_i) /. (x_k -. x_i) *. (lagrange_evaluation_k ~i:(i
-        + 1) points x_k a)
-        else
-            (lagrange_evaluation_k ~i:(i + 1) points x_k a)
 
-(* Lagrande polynomial evaluation based on lagrange_evaluation_k *)
-let rec lagrange_evaluation ?(i = 0) points a =
-    if i = Array.length points then
-        0.
+(* Tail call version of the sum
+ * Σ[i -> n] f(i) *)
+let sum f i n =
+  let rec it f i n sum =
+    if i = n then
+      (f i) +. sum
     else
-        let x_i, y_i = points.(i) in
-        y_i *. (lagrange_evaluation_k points x_i a) +. (lagrange_evaluation
-        ~i:(i + 1) points a)
+      it f (i+1) n (sum +. (f i))
+  in
+  it f i n 0.
+
+(* Tail call version of the product
+ * Π[i -> n] f(i) *)
+let product f i n =
+  let rec it f i n product =
+    if i = n then
+      (f i) *. product
+    else
+      it f (i+1) n (product *. (f i))
+  in
+  it f i n 1.
+
+(* Computes the Lagrange polynomial of index i, Li(x)
+ * v is the vector such that p(vi) = yi *)
+let lagrange v i x =
+  let lagrange_quotient j =
+    if j = i then 1.
+    else (x -. v.(j)) /. (v.(i) -. v.(j))
+  in
+  product lagrange_quotient 0 ((Array.length v) - 1)
+
+(* Computes the derivative of the Lagrange polynomial Li'(x)
+ * such that p(vi) = yi *)
+let derivative_lagrange v i x =
+  let f j =
+    if j = i then 0.
+    else 1. /. (v.(i) -. v.(j))
+  in
+  sum f 0 ((Array.length v) - 1)
+
+(* Lagrange polynomial evaluation *)
+let lagrange_evaluation v y x =
+  let lagrange_sum i =
+    y.(i) *. ( lagrange v i x )
+  in
+  sum lagrange_sum 0 ((Array.length y) - 1)
+
+(* Lagrange derivative evaluation *)
+let derivative_lagrange_evaluation v y x =
+  let f i =
+    y.(i) *. (derivative_lagrange v i x)
+  in
+  sum f 0 ((Array.length y) - 1)
+
 (* -------------------------------------------------------------------------- *)
