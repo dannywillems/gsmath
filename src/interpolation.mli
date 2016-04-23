@@ -10,7 +10,14 @@ val least_squares : (float * float) array -> float array -> float array
 val cgl_node :  ?i:int -> float -> float -> int -> (float -> float)
                 -> (float * float) list
 
-val lagrange_evaluation_k : ?i:int -> (float * float) array -> float -> float
-                            -> float
+val sum : (int -> float) -> int -> int -> float
 
-val lagrange_evaluation : ?i:int -> (float * float) array -> float -> float
+val product : (int -> float) -> int -> int -> float
+
+val lagrange : float array -> int -> float -> float
+
+val lagrange' : float array -> int -> float -> float
+
+val lagrange_evaluation : float array -> float array -> float -> float
+
+val lagrange'_evaluation : float array -> float array -> float -> float
