@@ -1,6 +1,6 @@
 let interval a b n =
     let step = (b -. a) /. (float n) in
-    let c = Array.create n 0. in
+    let c = Array.make n 0. in
     c.(0) <- a;
     for i = 1 to (n - 1)
     do
@@ -33,7 +33,7 @@ let rec trapeze f a b ?(i = 0) n =
 
 let rec trapeze_point x y ci =
     let n = Array.length x in
-    let a = Array.create n 0. in
+    let a = Array.make n 0. in
     a.(0) <- ci;
     for i = 1 to n - 1
     do
